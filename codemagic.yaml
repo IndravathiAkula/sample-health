@@ -18,7 +18,6 @@ workflows:
       - name: Flutter analyze
         working_directory: $CM_BUILD_DIR/ivf_care
         script: flutter analyze
-        ignore_failure: true
       - name: Flutter unit tests
         working_directory: $CM_BUILD_DIR/ivf_care
         script: flutter test
@@ -47,6 +46,7 @@ workflows:
       - name: Flutter analyze
         working_directory: $CM_BUILD_DIR/ivf_care
         script: flutter analyze
+        ignore_failure: true
       - name: Flutter unit tests
         working_directory: $CM_BUILD_DIR/ivf_care
         script: flutter test
