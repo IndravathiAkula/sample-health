@@ -43,17 +43,20 @@ workflows:
           $FLUTTER_ROOT/bin/dart --version
           flutter pub cache repair
           flutter pub get
-      - name: Flutter analyze
+
+      - name: Flutter analyze (warnings won't fail build)
         working_directory: $CM_BUILD_DIR/ivf_care
-        script: flutter analyze
-        ignore_failure: true
+        script: flutter analyze || true
+
       - name: Flutter unit tests
         working_directory: $CM_BUILD_DIR/ivf_care
         script: flutter test
         ignore_failure: true
+
       - name: Build iOS IPA (unsigned)
         working_directory: $CM_BUILD_DIR/ivf_care
         script: flutter build ipa --release --no-codesign
+
     artifacts:
       - $CM_BUILD_DIR/ivf_care/build/ios/ipa/*.ipa
       - $CM_BUILD_DIR/ivf_care/flutter_drive.log
