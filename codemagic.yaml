@@ -4,7 +4,7 @@ workflows:
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
-      flutter: stable
+      flutter: 3.32.8
     scripts:
       - name: Get Flutter packages
         working_directory: sample-health/ivf_care
