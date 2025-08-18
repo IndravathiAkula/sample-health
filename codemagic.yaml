@@ -1,20 +1,56 @@
 workflows:
-  ios-workflow:
-    name: iOS Workflow
+  android-workflow:
+    name: Android Workflow
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
-      flutter: 3.32.8
+      flutter: stable
+    scripts:
+      - name: Set up local.properties
+        script: |
+          echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/sample-health/ivf_care/android/local.properties"
+      - name: Get Flutter packages
+        working_directory: sample-health/ivf_care
+        script: |
+          flutter pub cache repair
+          flutter pub get
+      - name: Flutter analyze
+        working_directory: sample-health/ivf_care
+        script: flutter analyze
+      - name: Flutter unit tests
+        working_directory: sample-health/ivf_care
+        script: flutter test
+        ignore_failure: true
+      - name: Build AAB with Flutter
+        working_directory: sample-health/ivf_care
+        script: flutter build appbundle --release
+    artifacts:
+      - sample-health/ivf_care/build/**/outputs/**/*.aab
+      - sample-health/ivf_care/build/**/outputs/**/mapping.txt
+      - sample-health/ivf_care/flutter_drive.log
+
+  ios-workflow:
+    name: iOS Workflow (Unsigned)
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
     scripts:
       - name: Get Flutter packages
         working_directory: sample-health/ivf_care
-        script: flutter pub get
-
-      - name: Build iOS archive (unsigned)
-        working_directory: sample-health/ivf_care
         script: |
-          flutter build ipa --release --no-codesign
-
+          flutter pub cache repair
+          flutter pub get
+      - name: Flutter analyze
+        working_directory: sample-health/ivf_care
+        script: flutter analyze
+      - name: Flutter unit tests
+        working_directory: sample-health/ivf_care
+        script: flutter test
+        ignore_failure: true
+      - name: Build iOS IPA (unsigned)
+        working_directory: sample-health/ivf_care
+        script: flutter build ipa --release --no-codesign
     artifacts:
       - sample-health/ivf_care/build/ios/ipa/*.ipa
       - sample-health/ivf_care/flutter_drive.log
