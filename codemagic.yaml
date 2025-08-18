@@ -58,5 +58,4 @@ workflows:
         script: flutter build ipa --release --no-codesign
 
     artifacts:
-      - $CM_BUILD_DIR/ivf_care/build/ios/ipa/*.ipa
-      - $CM_BUILD_DIR/ivf_care/flutter_drive.log
+      - $CM_BUILD_DIR/ivf_care/build/ios/ipa/**/*.ipa
