@@ -60,7 +60,8 @@ workflows:
       - name: Copy IPA to artifacts folder
         working_directory: $CM_BUILD_DIR/ivf_care
         script: |
-          mkdir -p $CM_BUILD_DIR/artifacts
-          cp build/ios/ipa/*.ipa $CM_BUILD_DIR/artifacts/
-    artifacts:
-        - $CM_BUILD_DIR/artifacts/*.ipa
+          mkdir -p $CM_BUILD_DIR/ivf_care/artifacts
+          cp build/ios/ipa/*.ipa $CM_BUILD_DIR/ivf_care/artifacts/
+ 
+      artifacts:
+        - $CM_BUILD_DIR/ivf_care/artifacts/*.ipa
