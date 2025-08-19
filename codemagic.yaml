@@ -15,8 +15,3 @@ workflows:
     artifacts:
       - build/ios/iphoneos/Runner.app
       - build/ios/iphoneos/Runner.ipa
-    publishing:
-      email:
-        recipients:
-          - indravathi.a@achalasolutions.com
-        on_build_success: true
