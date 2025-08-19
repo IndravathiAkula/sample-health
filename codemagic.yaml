@@ -63,5 +63,5 @@ workflows:
           mkdir -p $CM_BUILD_DIR/ivf_care/artifacts
           cp build/ios/ipa/*.ipa $CM_BUILD_DIR/ivf_care/artifacts/
  
-      artifacts:
-        - $CM_BUILD_DIR/ivf_care/artifacts/*.ipa
+    artifacts:
+      - $CM_BUILD_DIR/ivf_care/artifacts/*.ipa
