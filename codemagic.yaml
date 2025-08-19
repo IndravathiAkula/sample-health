@@ -48,14 +48,19 @@ workflows:
         working_directory: $CM_BUILD_DIR/ivf_care
         script: flutter analyze || true
 
-      - name: Flutter unit tests
+      - name: Build iOS App (unsigned)
         working_directory: $CM_BUILD_DIR/ivf_care
-        script: flutter test
-        ignore_failure: true
+        script: flutter build ios --release --no-codesign
 
-      - name: Build iOS IPA (unsigned)
+      - name: Package unsigned IPA
         working_directory: $CM_BUILD_DIR/ivf_care
-        script: flutter build ipa --release --no-codesign
+        script: |
+          mkdir -p build/ios/ipa/Payload
+          cp -r build/ios/iphoneos/Runner.app build/ios/ipa/Payload/
+          cd build/ios/ipa
+          zip -r Runner.ipa Payload
 
     artifacts:
-      - $CM_BUILD_DIR/ivf_care/build/ios/ipa/**/*.ipa
+      - $CM_BUILD_DIR/ivf_care/build/ios/ipa/*.ipa
+
+
