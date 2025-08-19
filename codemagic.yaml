@@ -53,9 +53,13 @@ workflows:
         script: flutter test
         ignore_failure: true
 
-      - name: Build iOS IPA (unsigned)
+      - name: Build unsigned IPA
         working_directory: $CM_BUILD_DIR/ivf_care
-        script: flutter build ipa --release --no-codesign
+        script: |
+          xcode-project build-ipa \
+            --workspace ios/Runner.xcworkspace \
+            --scheme Runner \
+            --no-codesign
         
       - name: Copy IPA to artifacts folder
         working_directory: $CM_BUILD_DIR/ivf_care
@@ -64,4 +68,5 @@ workflows:
           cp build/ios/ipa/*.ipa $CM_BUILD_DIR/ivf_care/artifacts/
  
     artifacts:
-      - $CM_BUILD_DIR/ivf_care/artifacts/*.ipa
+      - $CM_BUILD_DIR/ivf_care/build/ios/ipa/*.ipa
+ 
