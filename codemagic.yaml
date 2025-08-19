@@ -56,6 +56,11 @@ workflows:
       - name: Build iOS IPA (unsigned)
         working_directory: $CM_BUILD_DIR/ivf_care
         script: flutter build ipa --release --no-codesign
-
+        
+      - name: Copy IPA to artifacts folder
+        working_directory: $CM_BUILD_DIR/ivf_care
+        script: |
+          mkdir -p $CM_BUILD_DIR/artifacts
+          cp build/ios/ipa/*.ipa $CM_BUILD_DIR/artifacts/
     artifacts:
-      - $CM_BUILD_DIR/ivf_care/build/ios/ipa/**/*.ipa
+        - $CM_BUILD_DIR/artifacts/*.ipa
