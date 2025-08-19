@@ -1,42 +1,22 @@
 workflows:
-  ios-workflow:
-    name: iOS Workflow (Unsigned)
-    max_build_duration: 120
+  ios-unsigned-workflow:
+    name: iOS Unsigned IPA
+    max_build_duration: 60
     instance_type: mac_mini_m2
     environment:
       flutter: stable
     scripts:
-      - name: Get Flutter packages
-        working_directory: $CM_BUILD_DIR/ivf_care
+      - name: Install dependencies
         script: |
-          $FLUTTER_ROOT/bin/dart --version
-          flutter pub cache repair
           flutter pub get
-
-      - name: Flutter analyze (warnings won't fail build)
-        working_directory: $CM_BUILD_DIR/ivf_care
-        script: flutter analyze || true
-
-      - name: Prepare Flutter iOS project for release
-        working_directory: $CM_BUILD_DIR/ivf_care
+      - name: Build iOS unsigned IPA
         script: |
-          flutter build ios --config-only --release
-
-      - name: Build unsigned IPA
-        working_directory: $CM_BUILD_DIR/ivf_care
-        script: |
-          xcode-project build-ipa \
-            --workspace ios/Runner.xcworkspace \
-            --scheme Runner \
-            --archive-flags "-destination generic/platform=iOS CODE_SIGNING_ALLOWED=NO" \
-            --export-options-plist ios/export_options.plist
-
-      - name: Copy IPA to artifacts folder
-        working_directory: $CM_BUILD_DIR/ivf_care
-        script: |
-          mkdir -p $CM_BUILD_DIR/ivf_care/artifacts
-          cp build/ios/ipa/*.ipa $CM_BUILD_DIR/ivf_care/artifacts/
-
+          flutter build ios --release --no-codesign
     artifacts:
-      - $CM_BUILD_DIR/ivf_care/build/ios/ipa/*.ipa
-      - $CM_BUILD_DIR/ivf_care/build/ios/archive/*.xcarchive
+      - build/ios/iphoneos/Runner.app
+      - build/ios/iphoneos/Runner.ipa
+    publishing:
+      email:
+        recipients:
+          - indravathi.a@achalasolutions.com
+        on_build_success: true
