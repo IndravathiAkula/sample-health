@@ -59,7 +59,7 @@ workflows:
           xcode-project build-ipa \
             --workspace ios/Runner.xcworkspace \
             --scheme Runner \
-            --no-codesign
+            --archive-flags "-destination generic/platform=iOS CODE_SIGNING_ALLOWED=NO"
         
       - name: Copy IPA to artifacts folder
         working_directory: $CM_BUILD_DIR/ivf_care
@@ -69,4 +69,5 @@ workflows:
  
     artifacts:
       - $CM_BUILD_DIR/ivf_care/build/ios/ipa/*.ipa
- 
+      - $CM_BUILD_DIR/ivf_care/build/ios/archive/*.xcarchive
+     
